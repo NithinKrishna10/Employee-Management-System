@@ -9,33 +9,74 @@
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #e9ecef;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 60px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
-        h1, h2 {
+        h1 {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             color: #343a40;
+            font-weight: 600;
+        }
+
+        /* Search & Button Container */
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 300px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn a {
+            text-decoration: none;
+            color: white;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
         }
 
         th, td {
@@ -45,41 +86,16 @@
         }
 
         th {
-            background-color: #007bff;
+            background-color: #343a40;
             color: white;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
 
-        .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* Search Bar Styling */
-        .search-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-
-        .search-container input {
-            padding: 10px;
-            width: 250px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
+        tr:hover {
+            background-color: #f1f1f1;
         }
 
         /* Modal Styling */
@@ -91,23 +107,28 @@
             transform: translate(-50%, -50%);
             width: 400px;
             background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             z-index: 10;
         }
 
         .modal h1 {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .modal input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .modal input:focus {
+            border-color: #007bff;
         }
 
         .modal button {
@@ -134,27 +155,44 @@
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search employees...">
         <button class="btn" id="openModal">Add New Employee</button>
+        <button class="btn">
+            <a href="{% url 'settings' %}">Field Settings</a>
+        </button>
     </div>
 
     <table id="employeeTable">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            {% for field in fields %}
-            <th>{{ field.field_name }}</th>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Additional Fields</th>
+                <th>Action</th>
+                {% comment %} {% for field in fields %}
+                <th>{{ field.field_name }}</th>
+                {% endfor %} {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.pk }}</td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.phone }}</td>
+                <td style="display: flex; flex-direction: column;">
+                    {% for key, value in employee.additional_data.items %}
+                    <span>{{ key }}: {{ value }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <button class="btn" onclick="openModal('{{ employee.id }}', '{{ employee.name }}')">Edit</button>
+                    <button class="btn" onclick="deleteEmployee('{{ employee.id }}')">Delete</button>
+                </td>
+            </tr>
             {% endfor %}
-        </tr>
-        {% for employee in employees %}
-        <tr>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.phone }}</td>
-            {% for key, value in employee.additional_data.items %}
-            <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
+        </tbody>
     </table>
 
     <div class="modal" id="employeeModal">
@@ -167,27 +205,32 @@
 
             <h2>Additional Fields</h2>
             {% for field in fields %}
-            <input type="text" name="{{ field.field_name }}" placeholder="{{ field.field_name }}">
+            <input type="text" name="{{ field.name }}" placeholder="{{ field.name }}">
             {% endfor %}
 
             <button type="submit" class="btn">Create Employee</button>
         </form>
     </div>
 
-    <div class="overlay" id="overlay"></div>
-
-    <div class="settings-container">
-        <h2>Settings: Add New Field</h2>
-        <form method="POST" action="{% url 'settings' %}">
+    <div class="modal" id="editModal">
+        <h1>Edit Employee</h1>
+        <form method="POST">
             {% csrf_token %}
-            <input type="text" name="field_name" placeholder="Field Name" required>
-            <button type="submit" class="btn">Add Field</button>
+            <input type="text" name="name" id="editNameInput" required>
+            <input type="email" name="email" id="editEmailInput" required>
+            <input type="text" name="phone" id="editPhoneInput" required>
+            <h2>Additional Fields</h2>
+            {% for field in fields %}
+            <input type="text" name="{{ field.name }}" id="edit{{ field.name }}Input">
+            {% endfor %}
+            <button type="submit" class="btn">Save Changes</button>
+        <button type="button" class="btn" onclick="closeEditModal()">Cancel</button>
         </form>
     </div>
+    <div class="overlay" id="overlay"></div>
 </div>
 
 <script>
-    // Modal logic
     const modal = document.getElementById('employeeModal');
     const openModalBtn = document.getElementById('openModal');
     const overlay = document.getElementById('overlay');
@@ -202,14 +245,13 @@
         overlay.style.display = 'none';
     };
 
-    // Real-time search logic
     const searchInput = document.getElementById('searchInput');
     const employeeTable = document.getElementById('employeeTable');
     const rows = employeeTable.getElementsByTagName('tr');
 
     searchInput.addEventListener('input', function () {
         const filter = searchInput.value.toLowerCase();
-        for (let i = 1; i < rows.length; i++) { // Skip header row
+        for (let i = 1; i < rows.length; i++) { 
             const cells = rows[i].getElementsByTagName('td');
             let match = false;
 
@@ -217,7 +259,7 @@
                 if (cells[j].textContent.toLowerCase().includes(filter)) {
                     match = true;
                     break;
-                }
+                } 
             }
             rows[i].style.display = match ? '' : 'none';
         }

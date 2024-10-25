@@ -10,7 +10,6 @@ dist/
 env
 db.sqlite3
 Makefile
-gas-deck-local
 
 # Ignore Django migration files
 */migrations/
