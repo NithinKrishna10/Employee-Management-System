@@ -1,0 +1,12 @@
+<h1>Manage Employee Fields</h1>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="field_name" placeholder="Field Name">
+    <button type="submit">Add Field</button>
+</form>
+
+<ul>
+    {% for field in fields %}
+    <li>{{ field.name }}</li>
+    {% endfor %}
+</ul>
