@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Employee Fields</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <style>
         /* Global Styles */
         body {
@@ -170,7 +172,7 @@
 
 <div class="container">
     <!-- Back Button -->
-    <a href="#" class="back-button" onclick="history.back()">
+    <a href="{% url 'employee_list' %}" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
         </svg>
@@ -190,12 +192,15 @@
         <li>
             <span>{{ field.name }}</span>
             <div class="actions">
-                <button class="edit-btn" onclick="openModal({{ field.id }}, '{{ field.name }}')">Edit</button>
+                <i class="fas fa-edit edit-icon" onclick="openModal({{ field.id }}, '{{ field.name }}')" title="Edit"></i>
                 <form method="POST" action="{% url 'delete_field' field.id %}" style="display: inline;">
                     {% csrf_token %}
-                    <button type="submit" class="delete-btn">Delete</button>
+                    <button type="submit" class="delete-icon-btn">
+                        <i class="fas fa-trash-alt" title="Delete"></i>
+                    </button>
                 </form>
             </div>
+            
         </li>
         {% endfor %}
     </ul>

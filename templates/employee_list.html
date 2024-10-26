@@ -1,270 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Employee List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* General Styling */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-        }
+      /* General Styling */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 40px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
+      .container {
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #343a40;
-            font-weight: 600;
-        }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #343a40;
+        font-weight: 600;
+      }
 
-        /* Search & Button Container */
-        .search-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+      /* Search & Button Container */
+      .search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
 
-        .search-container input {
-            width: 300px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
+      .search-container input {
+        width: 300px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        outline: none;
+        transition: all 0.3s ease;
+      }
 
-        .search-container input:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
+      .search-container input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
 
-        .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
+      .btn {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+      .btn:hover {
+        background-color: #0056b3;
+      }
 
-        .btn a {
-            text-decoration: none;
-            color: white;
-        }
+      .btn a {
+        text-decoration: none;
+        color: white;
+      }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        {% comment %} border-bottom: 1px solid #ddd; {% endcomment %}
+      }
 
-        th {
-            background-color: #343a40;
-            color: white;
-        }
+      th {
+        background-color: #343a40;
+        color: white;
+      }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+      tr:nth-child(even) {
+        background-color: #edebeb; /* Light blue for even rows */
+      }
+      
+      tr:nth-child(odd) {
+        background-color: #ffffff; /* White for odd rows */
+      }
+      
+      tr:hover {
+        background-color: #cceeff; /* Slightly darker on hover */
+      }
+      /* Modal Styling */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+      }
 
-        tr:hover {
-            background-color: #f1f1f1;
-        }
+      .modal h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-        }
+      .modal input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+      }
 
-        .modal h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      .modal input:focus {
+        border-color: #007bff;
+      }
 
-        .modal input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            outline: none;
-        }
+      .modal button {
+        width: 100%;
+      }
 
-        .modal input:focus {
-            border-color: #007bff;
-        }
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 5;
+      }
 
-        .modal button {
-            width: 100%;
-        }
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 5;
-        }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+    }
+
+    .navbar h2 {
+        margin: 0;
+    }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-profile {
+        margin-right: 15px;
+        font-size: 16px;
+    }
+
+    .logout-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .logout-btn:hover {
+        background-color: #c0392b;
+    }
+
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
-<div class="container">
-    <h1>Employee List</h1>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="navbar-right">
+                <span class="user-profile">Welcome, {{ user.username }}</span>
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn logout-btn">Logout</button>
+                </form>
+            </div>
+        </nav>
+    <div class="container">
+      <h1>Employee List</h1>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search employees...">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search employees..." />
         <button class="btn" id="openModal">Add New Employee</button>
         <button class="btn">
-            <a href="{% url 'settings' %}">Field Settings</a>
+          <a href="{% url 'settings' %}">Field Settings</a>
         </button>
-    </div>
+      </div>
 
-    <table id="employeeTable">
+      <table id="employeeTable">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Additional Fields</th>
-                <th>Action</th>
-                {% comment %} {% for field in fields %}
-                <th>{{ field.field_name }}</th>
-                {% endfor %} {% endcomment %}
-            </tr>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Additional Fields</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
-            {% for employee in employees %}
-            <tr>
-                <td>{{ employee.pk }}</td>
-                <td>{{ employee.name }}</td>
-                <td>{{ employee.email }}</td>
-                <td>{{ employee.phone }}</td>
-                <td style="display: flex; flex-direction: column;">
-                    {% for key, value in employee.additional_data.items %}
-                    <span>{{ key }}: {{ value }}</span>
-                    {% endfor %}
-                </td>
-                <td>
-                    <button class="btn" onclick="openModal('{{ employee.id }}', '{{ employee.name }}')">Edit</button>
-                    <button class="btn" onclick="deleteEmployee('{{ employee.id }}')">Delete</button>
-                </td>
-            </tr>
-            {% endfor %}
+          {% for employee in employees %}
+          <tr style="min-height: 50px">
+            <td>{{ employee.pk }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+            <td style="display: flex; flex-direction: column ">
+              {% for key, value in employee.additional_data.items %}
+              <span>{{ key }}: {{ value }}</span>
+              {% endfor %}
+            </td>
+            <td>
+                {% comment %} <button
+                class="btn"
+                onclick="openEditModal(
+                    '{{ employee.id }}',
+                    '{{ employee.name }}',
+                    '{{ employee.email }}',
+                    '{{ employee.phone }}',
+                    `{{ employee.additional_data|escapejs }}`
+                )">
+                Edit
+            </button> {% endcomment %}
+            
+            
+              <button class="btn" onclick="deleteEmployee('{{ employee.id }}')">
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
 
-    <div class="modal" id="employeeModal">
+      <div class="modal" id="employeeModal">
         <h1>Create Employee</h1>
         <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="phone" placeholder="Phone" required>
+          {% csrf_token %}
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="text" name="phone" placeholder="Phone" required />
 
-            <h2>Additional Fields</h2>
-            {% for field in fields %}
-            <input type="text" name="{{ field.name }}" placeholder="{{ field.name }}">
-            {% endfor %}
+          <h2>Additional Fields</h2>
+          {% for field in fields %}
+          <input
+            type="text"
+            name="{{ field.name }}"
+            placeholder="{{ field.name }}"
+          />
+          {% endfor %}
 
-            <button type="submit" class="btn">Create Employee</button>
+          <button type="submit" class="btn">Create Employee</button>
         </form>
-    </div>
+      </div>
 
-    <div class="modal" id="editModal">
+      <!-- Edit Modal -->
+      <div class="modal" id="editEmployeeModal">
         <h1>Edit Employee</h1>
         <form method="POST">
             {% csrf_token %}
-            <input type="text" name="name" id="editNameInput" required>
-            <input type="email" name="email" id="editEmailInput" required>
-            <input type="text" name="phone" id="editPhoneInput" required>
+            <input type="hidden" name="id" id="editId" />
+            <input type="text" name="name" id="editName" placeholder="Name" required />
+            <input type="email" name="email" id="editEmail" placeholder="Email" required />
+            <input type="text" name="phone" id="editPhone" placeholder="Phone" required />
+    
             <h2>Additional Fields</h2>
-            {% for field in fields %}
-            <input type="text" name="{{ field.name }}" id="edit{{ field.name }}Input">
-            {% endfor %}
+            <div id="additionalFieldsContainer"></div>
+    
             <button type="submit" class="btn">Save Changes</button>
-        <button type="button" class="btn" onclick="closeEditModal()">Cancel</button>
         </form>
     </div>
-    <div class="overlay" id="overlay"></div>
-</div>
+    
+      <div class="overlay" id="overlay"></div>
+    </div>
 
-<script>
-    const modal = document.getElementById('employeeModal');
-    const openModalBtn = document.getElementById('openModal');
-    const overlay = document.getElementById('overlay');
+    <script>
+      const modal = document.getElementById("employeeModal");
+      const openModalBtn = document.getElementById("openModal");
+      const editModal = document.getElementById("editEmployeeModal");
+      const overlay = document.getElementById("overlay");
 
-    openModalBtn.onclick = () => {
-        modal.style.display = 'block';
-        overlay.style.display = 'block';
-    };
+      // Open Edit Modal with pre-filled data
+      function openEditModal(id, name, email, phone, additionalData) {
 
-    overlay.onclick = () => {
-        modal.style.display = 'none';
-        overlay.style.display = 'none';
-    };
-
-    const searchInput = document.getElementById('searchInput');
-    const employeeTable = document.getElementById('employeeTable');
-    const rows = employeeTable.getElementsByTagName('tr');
-
-    searchInput.addEventListener('input', function () {
-        const filter = searchInput.value.toLowerCase();
-        for (let i = 1; i < rows.length; i++) { 
-            const cells = rows[i].getElementsByTagName('td');
-            let match = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                if (cells[j].textContent.toLowerCase().includes(filter)) {
-                    match = true;
-                    break;
-                } 
-            }
-            rows[i].style.display = match ? '' : 'none';
+        const addData = JSON.parse(additionalData);
+          
+        // Set basic employee fields
+        document.getElementById("editId").value = id;
+        document.getElementById("editName").value = name;
+        document.getElementById("editEmail").value = email;
+        document.getElementById("editPhone").value = phone;
+    
+        // Clear any existing additional fields
+        const additionalFieldsContainer = document.getElementById("additionalFieldsContainer");
+        additionalFieldsContainer.innerHTML = "";
+        console.log(addData);
+        // Populate additional fields dynamically
+        for (const [key, value] of object.entries(addData)) {
+            console.log(key, value);
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = key;
+            input.placeholder = key;
+            input.value = value;
+            additionalFieldsContainer.appendChild(input);
         }
-    });
-</script>
+    
+        // Open modal
+        document.getElementById("editEmployeeModal").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+    
 
-</body>
+
+      openModalBtn.onclick = () => {
+        modal.style.display = "block";
+        overlay.style.display = "block";
+      };
+
+      overlay.onclick = () => {
+        modal.style.display = "none";
+        overlay.style.display = "none";
+      };
+
+      const searchInput = document.getElementById("searchInput");
+      const employeeTable = document.getElementById("employeeTable");
+      const rows = employeeTable.getElementsByTagName("tr");
+
+      searchInput.addEventListener("input", function () {
+        const filter = searchInput.value.toLowerCase();
+        for (let i = 1; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName("td");
+          let match = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(filter)) {
+              match = true;
+              break;
+            }
+          }
+          rows[i].style.display = match ? "" : "none";
+        }
+      });
+    </script>
+  </body>
 </html>
