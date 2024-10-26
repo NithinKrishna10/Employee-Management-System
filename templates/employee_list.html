@@ -254,8 +254,8 @@
             </button> {% endcomment %}
             
             
-              <button class="btn" onclick="deleteEmployee('{{ employee.id }}')">
-                Delete
+              <button class="btn" >
+                <a href="{% url 'delete_employee' employee.id %}">Delete</a>
               </button>
             </td>
           </tr>
@@ -310,22 +310,19 @@
       const editModal = document.getElementById("editEmployeeModal");
       const overlay = document.getElementById("overlay");
 
-      // Open Edit Modal with pre-filled data
       function openEditModal(id, name, email, phone, additionalData) {
 
         const addData = JSON.parse(additionalData);
           
-        // Set basic employee fields
         document.getElementById("editId").value = id;
         document.getElementById("editName").value = name;
         document.getElementById("editEmail").value = email;
         document.getElementById("editPhone").value = phone;
     
-        // Clear any existing additional fields
         const additionalFieldsContainer = document.getElementById("additionalFieldsContainer");
         additionalFieldsContainer.innerHTML = "";
         console.log(addData);
-        // Populate additional fields dynamically
+       
         for (const [key, value] of object.entries(addData)) {
             console.log(key, value);
             const input = document.createElement("input");
@@ -335,8 +332,6 @@
             input.value = value;
             additionalFieldsContainer.appendChild(input);
         }
-    
-        // Open modal
         document.getElementById("editEmployeeModal").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     }

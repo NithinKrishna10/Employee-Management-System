@@ -114,3 +114,10 @@ def employee_list(request):
         return redirect('employee_list')
 
     return render(request, 'employee_list.html', {'employees': employees, 'fields': fields})
+
+
+@login_required(login_url='login')
+def employee_delete_view(request, emp_id):
+    employee = get_object_or_404(Employee, id=emp_id)
+    employee.delete()
+    return redirect('employee_list')
