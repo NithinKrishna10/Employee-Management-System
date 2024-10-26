@@ -26,24 +26,6 @@ Make sure the following are installed on your machine:
 
 ---
 
-## Project Structure  
-
-```
-employee_management/
-│
-├── docker-compose.yml   # Docker Compose configuration  
-├── Dockerfile           # Docker image definition  
-├── .env.example         # Example environment variables  
-├── manage.py            # Django management script  
-├── employee_app/        # Django app for employee management  
-│   ├── templates/       # HTML templates  
-│   ├── static/          # CSS and JavaScript files  
-│   └── models.py        # Django models for Employee data  
-├── requirements.txt     # Dependencies  
-└── README.md            # Project documentation  
-```
-
----
 
 ## Installation and Usage  
 
